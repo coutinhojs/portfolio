@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-ancestors 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self' https://api.counterapi.dev;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>portfólio</title>
+</head>
+<style class="">
+    ::selection {
+        background: #00ffff;
+        color: #000000;
+    }
+
+    body {
+        background-color: #000000;
+        background: radial-gradient(circle at center, #111111 0%, #000000 100%);
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-family: 'Courier New', monospace;
+        padding-left: 10%;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #000000;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .bento-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        width: auto;
+        animation: fadeInLeft 1.2s ease-out;
+    }
+
+    .card {
+        background: transparent;
+        border: none;
+        padding: 0;
+        text-decoration: none;
+        color: #ffffff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        min-height: auto;
+    }
+
+    .card:hover {
+        /* border-color: #00ffff; */
+        transform: translateX(30px) skewX(-10deg);
+        text-shadow: 0 0 20px #00ffff;
+        z-index: 10;
+    }
+
+    .card i {
+        font-size: 30px;
+        margin-bottom: 0;
+        color: #333;
+        transition: 0.3s;
+        order: 2;
+        opacity: 0;
+    }
+
+    .card:hover i {
+        opacity: 1;
+        color: #00ffff;
+        transform: translateX(10px);
+    }
+
+    .social-card i {
+        margin-bottom: 0;
+        order: 0;
+        opacity: 1;
+        color: #fff;
+    }
+
+    .card > span {
+        font-size: 50px;
+        font-weight: bold;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        order: 1;
+        text-align: left;
+        transform: skewX(-30deg) scaleY(0.8);
+        letter-spacing: -1px;
+        color: #fff;
+        transition: 0.3s;
+    }
+
+    .card:hover > span {
+        letter-spacing: 5px;
+        color: #00ffff;
+    }
+
+    .social-card {
+        flex-direction: row;
+        gap: 30px;
+        min-height: auto;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin-top: 20px;
+        padding-left: 10px;
+    }
+
+    .card.social-card:hover {
+        transform: none;
+        text-shadow: none;
+    }
+
+    .card.social-card:hover i {
+        transform: none;
+    }
+
+    .social-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .social-name {
+        font-size: 14px;
+        font-weight: bold;
+        color: #ffffff;
+        text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    }
+
+    .social-card span {
+        animation: none;
+        order: 0;
+    }
+
+    .social-card a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 35px;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .social-card a:hover {
+        color: #00ffff;
+        background: rgba(0, 255, 255, 0.1);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    }
+
+    .trail {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: #00ffff;
+        border-radius: 50%;
+        pointer-events: none;
+        box-shadow: 0 0 10px #00ffff, 0 0 20px #00ff88;
+        animation: fadeOut 1s linear forwards;
+        z-index: 10000;
+    }
+
+    @keyframes fadeOut {
+        0% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+        }
+    }
+
+    @keyframes fadeInLeft {
+        from { opacity: 0; transform: translateX(-50px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Estilos da Vinheta de Entrada */
+    #intro-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: opacity 1s ease-out, visibility 1s ease-out;
+    }
+
+    #intro-overlay.hidden {
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    /* Animação do texto saindo */
+    #intro-overlay.hidden .intro-text {
+        opacity: 0;
+        transform: scale(1.5);
+        transition: all 0.8s ease-out;
+    }
+
+    .intro-text {
+        font-size: 50px;
+        font-weight: bold;
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        text-align: center;
+        transition: transform 0.5s ease;
+        min-height: 60px;
+    }
+
+    .intro-text span:not(.cursor) {
+        animation: neonPulse 1.5s infinite alternate;
+    }
+
+    .cursor {
+        display: inline-block;
+        width: 3px;
+        height: 1em;
+        background-color: #00ffff;
+        margin-left: 5px;
+        animation: blink 1s infinite;
+        vertical-align: middle;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+
+    @keyframes neonPulse {
+        from { text-shadow: 0 0 20px #00ffff; }
+        to { text-shadow: 0 0 40px #00ffff, 0 0 80px #00ffff; }
+    }
+
+    /* Painel do Admin (Contador) */
+    #admin-panel {
+        display: none; /* Escondido por padrão */
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(10, 10, 10, 0.95);
+        border: 1px solid #00ffff;
+        padding: 15px 20px;
+        border-radius: 10px;
+        color: #00ffff;
+        font-family: 'Courier New', monospace;
+        font-size: 16px;
+        font-weight: bold;
+        z-index: 100000;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        animation: fadeInUp 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+        .bento-grid {
+            align-items: center;
+        }
+    }
+</style>
+
+<body>
+    <div id="intro-overlay">
+        <div class="intro-text"></div>
+    </div>
+
+    <div class="bento-grid">
+        <a href="projects.html" class="card">
+            <i class="fa-solid fa-code"></i>
+            <span>My Projects</span>
+        </a>
+        
+        <a href="aboutme.html" class="card">
+            <i class="fa-regular fa-user"></i>
+            <span>About Me</span>
+        </a>
+
+        <a href="mailto:coutinhoprog@gmail.com" class="card">
+            <i class="fa-regular fa-envelope"></i>
+            <span>Contact Me</span>
+        </a>
+
+        <div class="card social-card">
+            <div class="social-item">
+                <a href="https://github.com/coutinhojs" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fab fa-github"></i></a>
+                <span class="social-name">GitHub</span>
+            </div>
+            <div class="social-item">
+                <a href="https://discord.com/users/1063469662857343026" target="_blank" rel="noopener noreferrer" title="Discord"><i class="fab fa-discord"></i></a>
+                <span class="social-name">Discord</span>
+            </div>
+            <div class="social-item">
+                <a href="https://www.linkedin.com/in/marcos-c-610113354?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <span class="social-name">LinkedIn</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Elemento do Contador (Invisível para usuários comuns) -->
+    <div id="admin-panel">
+        <i class="fa-solid fa-eye"></i> <span id="visitor-counter">Loading...</span>
+    </div>
+
+    <script>
+        // Define token de sessão para permitir navegação
+        sessionStorage.setItem('session_valid', 'true');
+
+        document.addEventListener('mousemove', (e) => {
+            const trail = document.createElement('div');
+            trail.classList.add('trail');
+            trail.style.left = e.pageX + 'px';
+            trail.style.top = e.pageY + 'px';
+            document.body.appendChild(trail);
+
+            setTimeout(() => {
+                trail.remove();
+            }, 1000);
+        });
+
+        // Typewriter Effect
+        const introText = document.querySelector('.intro-text');
+        const text1 = "Coutinho ";
+        const text2 = "Portfolio";
+        let charIndex = 0;
+
+        function type() {
+            if (charIndex < text1.length) {
+                introText.innerHTML = text1.substring(0, charIndex + 1) + '<span class="cursor"></span>';
+                charIndex++;
+                setTimeout(type, 100);
+            } else if (charIndex < text1.length + text2.length) {
+                const part1 = text1;
+                const part2 = text2.substring(0, charIndex - text1.length + 1);
+                introText.innerHTML = `${part1}<span style="color: #00ffff; text-shadow: 0 0 20px #00ffff;">${part2}</span><span class="cursor"></span>`;
+                charIndex++;
+                setTimeout(type, 100);
+            }
+        }
+
+        // Script para remover a vinheta automaticamente
+        const overlay = document.getElementById('intro-overlay');
+        if (sessionStorage.getItem('introShown')) {
+            overlay.style.display = 'none';
+        } else {
+            type(); // Inicia a digitação
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                    sessionStorage.setItem('introShown', 'true');
+                }, 3500); // Tempo aumentado para acomodar a animação
+            });
+        }
+
+        // Lógica do Contador de Visitas
+        // Usa uma API externa para persistir os dados já que não temos banco de dados local
+        
+        // Verifica se já visitou para não contar F5 repetidamente
+        let apiUrl = 'https://api.counterapi.dev/v1/coutinho-portfolio-site/visits';
+        if (!localStorage.getItem('hasVisitedPortfolio')) {
+            apiUrl += '/up'; // Só adiciona o '/up' (incrementar) se não tiver visitado antes
+            localStorage.setItem('hasVisitedPortfolio', 'true');
+        }
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('visitor-counter').innerText = data.count + ' Views';
+            })
+            .catch(err => console.log('Erro ao carregar contador:', err));
+
+        // Verifica se é o Admin acessando (procura por ?admin=true na URL)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('admin') === 'true') {
+            document.getElementById('admin-panel').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

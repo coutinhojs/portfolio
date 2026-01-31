@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        if (!sessionStorage.getItem('session_valid')) {
+            window.location.replace("index.html");
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-ancestors 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>portfólio</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    ::selection {
+        background: #00ffff;
+        color: #000000;
+    }
+
+    body {
+        background-color: #000000;
+        color: #ffffff;
+        font-family: 'Courier New', monospace;
+        margin: 20px;
+        background: radial-gradient(circle at center, #111111 0%, #000000 100%);
+      
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #000000;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    h1 {
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        font-size: 50px;
+        background: linear-gradient(90deg, #00ffff 0%, #00ffff 50%, #00ffff 100%);
+        -webkit-text-fill-color: transparent;
+         -webkit-background-clip: text;
+        background-clip: text;
+        filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.8));
+        text-align: center;
+        margin-bottom: 40px;
+        margin-top: 20px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #e0e0e0;
+        font-size: 18px;
+        margin-top: -30px;
+        margin-bottom: 40px;
+    }
+
+    .projects-wrapper {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        gap: 30px;
+        padding: 20px;
+    }
+
+    /* Estilo unificado para as imagens dentro dos cards */
+    .project1 img, .project2 img, .project3 img, .project4 img, .project5 img, .project6 img {
+        width: 100%;
+        height: 150px; /* Altura reduzida */
+        object-fit: cover;
+        border-radius: 15px 15px 0 0;
+        /* Máscara suave para o preto */
+        -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent);
+        mask-image: linear-gradient(to bottom, black 60%, transparent);
+        transition: opacity 0.3s ease;
+        cursor: pointer;
+        transition: transform 0.5s ease;
+    }
+
+    .project1, .project2, .project3, .project4, .project5, .project6 {
+        background-color: #0a0a0a;
+        min-height: 480px;
+        height: auto;
+        width: 100%;
+        max-width: 350px; /* Largura ajustada para caber melhor lado a lado */
+        border-radius: 15px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        border: 1px solid #00ffff;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+    }
+
+    /* Efeito de hover no card inteiro */
+    .project1:hover, .project2:hover, .project3:hover, .project4:hover, .project5:hover, .project6:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+    }
+
+    .project1:hover img, .project2:hover img, .project3:hover img, .project4:hover img, .project5:hover img, .project6:hover img {
+        transform: scale(1.05);
+    }
+
+    p {
+        color: #e0e0e0;
+        text-align: justify;
+        font-size: 14px;
+        line-height: 1.4;
+        overflow-wrap: break-word;
+        width: 100%;
+        padding: 0 10px;
+    }
+    h2 {
+        color: #00ffff;
+        text-align: center;
+        margin-top: 15px;
+        margin-bottom: 10px;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        width: 100%;
+        font-size: 24px;
+    }
+
+    .project-date {
+        color: #888;
+        font-size: 12px;
+        margin-bottom: 5px;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .tech-stack {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 10px 10px;
+    }
+
+    .tech-tag {
+        font-size: 11px;
+        color: #00ffff;
+        background: rgba(0, 255, 255, 0.1);
+        padding: 4px 10px;
+        border-radius: 15px;
+        border: 1px solid rgba(0, 255, 255, 0.3);
+    }
+
+    .project-link {
+        margin-top: auto;
+        align-self: flex-start;
+        color: #00ffff;
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        padding: 10px 20px;
+        border: 1px solid #00ffff;
+        border-radius: 25px;
+        background: rgba(0, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .project-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+        background: #00ffff;
+        color: #000000;
+    }
+
+    /* Estilos do Modal (Janela Pop-up) */
+    .modal {
+        display: none; /* Escondido por padrão */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9); /* Fundo preto semi-transparente */
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        display: flex;
+        background-color: #0a0a0a;
+        max-width: 900px;
+        width: 90%;
+        border: 2px solid #00ffff;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        animation: zoomIn 0.3s ease;
+    }
+
+    @keyframes zoomIn {
+        from {transform: scale(0.8); opacity: 0;}
+        to {transform: scale(1); opacity: 1;}
+    }
+
+    .modal-img-container {
+        flex: 0.15;
+        background: #000;
+        min-height: 100px;
+    }
+
+    .modal-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .modal-info {
+        flex: 1;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .modal-info h2 {
+        text-align: left;
+        margin-top: 0;
+        font-size: 32px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 15px;
+        width: 100%;
+    }
+
+    .modal-info p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #cccccc;
+        margin-top: 20px;
+        text-align: left;
+        padding: 0;
+        white-space: pre-line;
+    }
+
+    @media (max-width: 768px) {
+        .modal-content {
+            flex-direction: column;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-img-container {
+            height: 250px;
+            flex: none;
+        }
+        .modal-info {
+            padding: 20px;
+        }
+    }
+
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 35px;
+        color: #08d7fc;
+        font-size: 50px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        z-index: 1001;
+    }
+
+    .close:hover {
+        color: #ffffff;
+        text-shadow: 0 0 10px #00ffff;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 30px;
+        font-size: 27px;
+        justify-content: center;
+        margin-top: 50px;
+        margin-bottom: 30px;
+        width: 100%;
+    }
+
+    .social-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .social-name {
+        font-size: 14px;
+        font-weight: bold;
+        color: #ffffff;
+        text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    }
+
+    .social-links a {
+        color: #ffffff;
+        text-decoration: none;
+        border: 2px solid #00ffff;
+        border-radius: 50%;
+        padding: 10px;
+        width: 55px;
+        height: 55px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+        color: #00ffff;
+        transform: scale(1.2);
+    }
+
+    .trail {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: #00ffff;
+        border-radius: 50%;
+        pointer-events: none;
+        box-shadow: 0 0 10px #00ffff, 0 0 20px #00ff88;
+        animation: fadeOut 1s linear forwards;
+        z-index: 10000;
+    }
+
+    @keyframes fadeOut {
+        0% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+        }
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .project-card {
+        animation: fadeInUp 0.8s ease-out backwards;
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .back-btn {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        color: #00ffff;
+        font-size: 30px;
+        text-decoration: none;
+        transition: 0.3s;
+        z-index: 100;
+    }
+
+    .back-btn:hover {
+        text-shadow: 0 0 15px #00ffff;
+        transform: scale(1.1);
+    }
+</style>
+
+<body>
+    <a href="index.html" class="back-btn" title="Back to Home"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1>My Works</h1>
+    <p class="subtitle">A collection of projects I've worked on.</p>
+
+    <div class="container">
+        <div class="projects-wrapper">
+            <div class="project-card" style="animation-delay: 0.1s;">
+                <div class="project1">
+                    <img src="imagensSITE/projeto1.jpeg" alt="StudioCodar" title="StudioCodar" onclick="openModal(this)">
+                    <h2 style="font-weight: bold;">Studio Codar</h2>
+                    <span class="project-date">jan 2025 - december 2025</span>
+                    <div class="tech-stack">
+                        <span class="tech-tag">HTML</span>
+                        <span class="tech-tag">CSS</span>
+                        <span class="tech-tag">JavaScript</span>
+                    </div>
+                    <p>A platform designed to help beginner programmers learn faster. Features an interactive code editor and AI assistant.</p>
+                    <div class="project-details" style="display: none;">This platform was developed to help beginner programmers learn faster by providing a simple and interactive environment. The project features a real-time code editor and an AI assistant that helps with explanations and suggestions during the learning process.
+
+The application was built using only HTML, CSS, and JavaScript, focusing on performance, simplicity, and accessibility. One of the main challenges was creating an intuitive user experience without using frameworks, which was solved through a well-structured layout, efficient DOM manipulation, and real-time user feedback.
+
+The result is a lightweight and practical platform, ideal for those who are just starting in programming.</div>
+                    <a href="#" class="project-link" title="Visit Project">
+                        View Project <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="project-card" style="animation-delay: 0.2s;">
+                <div class="project2" style="justify-content: center; align-items: center;">
+                    <i class="fa-solid fa-screwdriver-wrench" style="font-size: 50px; color: #00ffff; margin-bottom: 20px;"></i>
+                    <h2 style="font-weight: bold;">In Development</h2>
+                    <span class="project-date" style="text-align: center;">2026</span>
+                </div>
+            </div>
+            <div class="project-card" style="animation-delay: 0.3s;">
+                <div class="project3" style="justify-content: center; align-items: center;">
+                    <i class="fa-solid fa-screwdriver-wrench" style="font-size: 50px; color: #00ffff; margin-bottom: 20px;"></i>
+                    <h2 style="font-weight: bold;">In Development</h2>
+                    <span class="project-date" style="text-align: center;">2026</span>
+                </div>
+            </div>
+            <div class="project-card" style="animation-delay: 0.4s;">
+                <div class="project4" style="justify-content: center; align-items: center;">
+                    <i class="fa-solid fa-screwdriver-wrench" style="font-size: 50px; color: #00ffff; margin-bottom: 20px;"></i>
+                    <h2 style="font-weight: bold;">In Development</h2>
+                    <span class="project-date" style="text-align: center;">2026</span>
+                </div>
+            </div>
+            <div class="project-card" style="animation-delay: 0.5s;">
+                <div class="project5" style="justify-content: center; align-items: center;">
+                    <i class="fa-solid fa-screwdriver-wrench" style="font-size: 50px; color: #00ffff; margin-bottom: 20px;"></i>
+                    <h2 style="font-weight: bold;">In Development</h2>
+                    <span class="project-date" style="text-align: center;">2026</span>
+                </div>
+            </div>
+            <div class="project-card" style="animation-delay: 0.6s;">
+                <div class="project6" style="justify-content: center; align-items: center;">
+                    <i class="fa-solid fa-screwdriver-wrench" style="font-size: 50px; color: #00ffff; margin-bottom: 20px;"></i>
+                    <h2 style="font-weight: bold;">In Development</h2>
+                    <span class="project-date" style="text-align: center;">2026</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="social-links">
+        <div class="social-item">
+            <a href="https://github.com/coutinhojs" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fab fa-github"></i></a>
+            <span class="social-name">GitHub</span>
+        </div>
+        <div class="social-item">
+            <a href="https://discord.com/users/1063469662857343026" target="_blank" rel="noopener noreferrer" title="Discord"><i class="fab fa-discord"></i></a>
+            <span class="social-name">Discord</span>
+        </div>
+        <div class="social-item">
+            <a href="https://www.linkedin.com/in/marcos-c-610113354?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <span class="social-name">LinkedIn</span>
+        </div>
+    </div>
+
+    <!-- Estrutura do Modal -->
+    <div id="imageModal" class="modal" onclick="if(event.target === this) closeModal()">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <div class="modal-img-container">
+                <img id="modalImg" src="" alt="Project Image">
+            </div>
+            <div class="modal-info">
+                <h2 id="modalTitle">Project Title</h2>
+                <p id="modalDesc">Description goes here...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para abrir o modal
+        function openModal(element) {
+            var modal = document.getElementById("imageModal");
+            var modalImg = document.getElementById("modalImg");
+            var modalTitle = document.getElementById("modalTitle");
+            var modalDesc = document.getElementById("modalDesc");
+
+            // Pega os dados do card pai
+            var parentCard = element.parentElement;
+            var title = parentCard.querySelector('h2').innerText;
+            var details = parentCard.querySelector('.project-details');
+            var desc = parentCard.querySelector('p').innerText;
+
+            modal.style.display = "flex";
+            modalImg.src = element.src;
+            modalTitle.innerText = title;
+            
+            if (details) {
+                modalDesc.innerText = details.innerText;
+            } else {
+                modalDesc.innerText = desc + "\n\nHere you can add more detailed information about the project, such as the specific technologies used, the challenges faced during development, and the solutions implemented. This space is perfect for telling the story of your project.";
+            }
+        }
+
+        // Função para fechar o modal
+        function closeModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            const trail = document.createElement('div');
+            trail.classList.add('trail');
+            trail.style.left = e.pageX + 'px';
+            trail.style.top = e.pageY + 'px';
+            document.body.appendChild(trail);
+
+            setTimeout(() => {
+                trail.remove();
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>

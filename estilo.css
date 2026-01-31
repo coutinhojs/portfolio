@@ -1,0 +1,23 @@
+
+.nav-link{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: rgb(255, 255, 255);
+}
+.nav-link:hover{
+    background-color: #efe2e2;
+    color: #5e2ce9;
+    border-radius: 8px;
+}
+.nav{
+    background-color: #000000;
+}
+body{
+    background-image: url('imagensSITE/animado.gif');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.container{
+   background-color: rgba(0, 0, 0, 0.7);
+}
